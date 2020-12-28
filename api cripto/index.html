@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!--link do bootstrap-->
+    <title>API Criptomoedas</title>
+    <style type="text/css">
+        .historico { color:#3f3f3f; font-size: 12px;}
+        
+    </style>
+    <script type="text/javascript">
+        //chave da minha API em um objeto
+
+        var apikey = {
+            key: 'Sua Chave Aqui..'
+        }
+    
+        // agora vamos fazer a requisição
+
+        fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY='+apikey.key)
+            .then( (response) => {
+                if (!response.ok) throw new Error ('Erro ao executar a requisição, status' + response.status);
+                return response.json();
+            } )
+            .then((api) => {
+                                
+                var texto = "";
+                //pegar 10 moedas e seus simbolos
+                for (let i = 0; i < 10; i++){
+
+                    
+                    //mostrando informações da API
+
+                    texto = texto + `
+
+                    <div class="media">
+
+                        <img src="img/icon.png" class="align-self-center mr-3" alt="coin" width="100" height="60">
+                        <div class="media-body">
+                            <h5 class="mt-2">${api.data[i].name}</h5>
+                            <p>${api.data[i].symbol}</p>
+                            <p class="historico">${api.data[i].first_historical_data}</p>
+                        </div>
+                        
+
+                    </div> `;
+
+                    document.getElementById("coins").innerHTML = texto;
+
+
+                }
+
+
+
+            })
+            .catch((error) => {
+
+                console.error(error.message);
+            });
+
+    </script>
+</head>
+<body>
+    <div id='coins'></div>
+
+
+</body>
+</html>
